@@ -1,0 +1,29 @@
+.page {
+  width: 100%;
+  max-width: 75rem;
+  margin: 0 auto;
+  padding: 1rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: transparent;
+
+  header {
+    padding: 1rem;
+    background-color: var(--color-primary-700);
+    color: var(--color-white);
+  }
+
+  main {
+    padding: 2rem 0;
+    flex: 1 1 auto;
+  }
+
+  footer {
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--color-primary-700);
+    color: var(--color-white);
+  }
+}
