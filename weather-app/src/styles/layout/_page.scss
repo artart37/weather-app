@@ -1,8 +1,9 @@
+@use "../abstracts" as abstracts;
+
+$content-padding: 1.5rem;
+
 .page {
   width: 100%;
-  max-width: 75rem;
-  margin: 0 auto;
-  padding: 1rem;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -10,20 +11,51 @@
   background-color: transparent;
 
   header {
-    padding: 1rem;
+    width: 100%;
+    padding: $content-padding;
     background-color: var(--color-primary-700);
     color: var(--color-white);
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
   }
 
   main {
-    padding: 2rem 0;
+    width: 100%;
+    padding: $content-padding;
     flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   footer {
     width: 100%;
-    padding: 1rem;
+    padding: $content-padding;
     background-color: var(--color-primary-700);
     color: var(--color-white);
+    margin-top: auto;
+  }
+
+  @media (max-width: map-get(abstracts.$breakpoints, desktop)) {
+    header,
+    main,
+    footer {
+      padding: $content-padding * 0.875;
+    }
+  }
+
+  @media (max-width: map-get(abstracts.$breakpoints, tablet)) {
+    header,
+    main,
+    footer {
+      padding: $content-padding * 0.75;
+    }
+  }
+
+  @media (max-width: map-get(abstracts.$breakpoints, mobile)) {
+    header,
+    main,
+    footer {
+      padding: $content-padding * 0.625;
+    }
   }
 }
