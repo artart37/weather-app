@@ -1,0 +1,22 @@
+<table class="table-base">
+  <thead>
+    <tr>
+      @for (header of headers; track header.key) {
+      <th class="table-base__header">
+        <span>{{ header.label }}</span>
+      </th>
+      }
+    </tr>
+  </thead>
+  <tbody>
+    @for (row of data; track trackById($index, row)) {
+    <tr>
+      @for (header of headers; track header.key) {
+      <td class="table-base__cell">
+        <span>{{ row[header.key] }}</span>
+      </td>
+      }
+    </tr>
+    }
+  </tbody>
+</table>

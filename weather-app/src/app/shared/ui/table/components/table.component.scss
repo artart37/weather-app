@@ -1,0 +1,13 @@
+@use "utils" as utils;
+
+.table-base {
+  @include utils.table-base;
+
+  &__header {
+    font-weight: bold;
+  }
+
+  &__cell {
+    text-align: left;
+  }
+}
