@@ -1,0 +1,23 @@
+@use "../abstracts" as abstracts;
+
+html {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+:root {
+  @each $key, $value in abstracts.$colors {
+    --#{$key}: #{$value};
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
