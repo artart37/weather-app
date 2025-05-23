@@ -2,12 +2,11 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  selector: 'wa-button',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './button.component.html',
-  styleUrl: './button.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'wa-button',
+    imports: [CommonModule],
+    templateUrl: './button.component.html',
+    styleUrl: './button.component.scss'
 })
 export class WaButtonComponent {
   @Input() accent = false;
