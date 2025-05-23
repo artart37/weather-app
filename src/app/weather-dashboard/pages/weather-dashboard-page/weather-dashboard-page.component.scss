@@ -2,16 +2,9 @@
 $header-padding: 1.5rem;
 $content-padding: 1.5rem;
 $grid-gap: 1.5rem;
-$mobile-breakpoint: 768px;
 
 .weather-dashboard {
   color: var(--color-tertiary-800);
-
-  &__title {
-    margin: 0;
-    font-size: 1.75rem;
-    font-weight: 600;
-  }
 
   &__search {
     margin-bottom: $grid-gap;
@@ -28,10 +21,6 @@ $mobile-breakpoint: 768px;
   }
 
   @media (max-width: $mobile-breakpoint) {
-    &__title {
-      font-size: 1.5rem;
-    }
-
     &__cities {
       grid-template-columns: 1fr;
     }
