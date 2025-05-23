@@ -11,8 +11,8 @@ import { TableHeader, TableRow } from '../models';
   styleUrl: './table.component.scss',
 })
 export class WaTableComponent<T> {
-  @Input() data: TableRow<T>[] | null = [];
-  @Input() headers: TableHeader<T>[] | null = [];
+  @Input() data: TableRow<T>[] | null = null;
+  @Input() headers: TableHeader<T>[] | null = null;
 
   trackById(index: number, item: any): number | string {
     if (item.hasOwnProperty('id')) {

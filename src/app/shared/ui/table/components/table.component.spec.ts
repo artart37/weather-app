@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
 import { WaTableComponent } from './table.component';
 import { TableHeader, TableRow } from '../models';
 
@@ -29,9 +29,6 @@ describe('WaTableComponent', () => {
 
     fixture = TestBed.createComponent(WaTableComponent<TestData>);
     component = fixture.componentInstance;
-    component.headers = mockHeaders;
-    component.data = mockData;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -39,6 +36,10 @@ describe('WaTableComponent', () => {
   });
 
   it('should display headers correctly', () => {
+    component.headers = mockHeaders;
+    component.data = mockData;
+    fixture.detectChanges();
+
     const headerCells = fixture.nativeElement.querySelectorAll('th');
     expect(headerCells.length).toBe(mockHeaders.length);
     expect(headerCells[0].textContent.trim()).toBe('Name');
@@ -46,6 +47,10 @@ describe('WaTableComponent', () => {
   });
 
   it('should display data rows correctly', () => {
+    component.headers = mockHeaders;
+    component.data = mockData;
+    fixture.detectChanges();
+
     const rows = fixture.nativeElement.querySelectorAll('tbody tr');
     expect(rows.length).toBe(mockData.length);
   });
