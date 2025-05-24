@@ -1,0 +1,13 @@
+@use "sass:map";
+@use "../variables/" as variables;
+
+@mixin media-query($device) {
+  @if map.has-key(variables.$breakpoints, $device) {
+    $device-value: map.get(variables.$breakpoints, $device);
+    @media (max-width: $device-value) {
+      @content;
+    }
+  } @else {
+    @error 'The device name #{$device} is not defined in the breakpoints map.';
+  }
+}

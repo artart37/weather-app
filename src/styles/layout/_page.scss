@@ -1,4 +1,4 @@
-@use "../abstracts" as abstracts;
+@use "../abstracts/mixins" as mixins;
 
 $content-padding: 1.5rem;
 
@@ -16,6 +16,16 @@ $content-padding: 1.5rem;
     background-color: var(--color-primary-700);
     color: var(--color-white);
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+
+    h1 {
+      margin: 0;
+      font-size: 1.75rem;
+      font-weight: 600;
+
+      @include mixins.media-query(mobile) {
+        font-size: 1.5rem;
+      }
+    }
   }
 
   main {
@@ -35,7 +45,7 @@ $content-padding: 1.5rem;
     margin-top: auto;
   }
 
-  @media (max-width: map-get(abstracts.$breakpoints, desktop)) {
+  @include mixins.media-query(desktop) {
     header,
     main,
     footer {
@@ -43,7 +53,7 @@ $content-padding: 1.5rem;
     }
   }
 
-  @media (max-width: map-get(abstracts.$breakpoints, tablet)) {
+  @include mixins.media-query(tablet) {
     header,
     main,
     footer {
@@ -51,7 +61,7 @@ $content-padding: 1.5rem;
     }
   }
 
-  @media (max-width: map-get(abstracts.$breakpoints, mobile)) {
+  @include mixins.media-query(mobile) {
     header,
     main,
     footer {
