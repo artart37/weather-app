@@ -1,0 +1,54 @@
+@use "../abstracts/mixins" as mixins;
+@use "../abstracts/variables" as variables;
+
+.wa-card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-white);
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+  min-width: 20rem;
+
+  &:hover {
+    box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.1);
+  }
+}
+
+.wa-card-header {
+  border-bottom: 0.125rem solid var(--color-tertiary-200);
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: currentColor;
+  @include mixins.responsive-spacing(padding, card);
+
+  h2 {
+    @include mixins.responsive-spacing(margin-top, sm);
+    @include mixins.responsive-spacing(margin-bottom, sm);
+  }
+}
+
+.wa-card-body {
+  flex-grow: 1;
+  color: currentColor;
+  @include mixins.responsive-spacing(padding, card);
+
+  ul,
+  ol {
+    @include mixins.responsive-spacing(padding-left, card);
+    @include mixins.responsive-spacing(margin-top, card);
+    @include mixins.responsive-spacing(margin-bottom, card);
+
+    li {
+      @include mixins.responsive-spacing(margin-bottom, sm);
+    }
+  }
+}
+
+.wa-card-footer {
+  padding: variables.$spacing-xs variables.$card;
+  border-top: 0.125rem solid var(--color-tertiary-200);
+  text-align: right;
+  color: currentColor;
+}

@@ -1,7 +1,5 @@
 @use "../abstracts/mixins" as mixins;
 
-$content-padding: 1.5rem;
-
 .page {
   width: 100%;
   min-height: 100vh;
@@ -10,62 +8,17 @@ $content-padding: 1.5rem;
   position: relative;
   background-color: transparent;
 
-  header {
-    width: 100%;
-    padding: $content-padding;
-    background-color: var(--color-primary-700);
-    color: var(--color-white);
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
-
-    h1 {
-      margin: 0;
-      font-size: 1.75rem;
-      font-weight: 600;
-
-      @include mixins.media-query(mobile) {
-        font-size: 1.5rem;
-      }
-    }
+  header,
+  main,
+  footer {
+    @include mixins.responsive-spacing(padding, content);
   }
 
   main {
     width: 100%;
-    padding: $content-padding;
     flex: 1 1 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-
-  footer {
-    width: 100%;
-    padding: $content-padding;
-    background-color: var(--color-primary-700);
-    color: var(--color-white);
-    margin-top: auto;
-  }
-
-  @include mixins.media-query(desktop) {
-    header,
-    main,
-    footer {
-      padding: $content-padding * 0.875;
-    }
-  }
-
-  @include mixins.media-query(tablet) {
-    header,
-    main,
-    footer {
-      padding: $content-padding * 0.75;
-    }
-  }
-
-  @include mixins.media-query(mobile) {
-    header,
-    main,
-    footer {
-      padding: $content-padding * 0.625;
-    }
   }
 }
