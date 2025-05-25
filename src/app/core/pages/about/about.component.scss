@@ -1,0 +1,32 @@
+@use "utils" as utils;
+
+.about {
+  &__header {
+    @include utils.responsive-spacing(margin-bottom, sm);
+
+    h2 {
+      font-size: 1.75rem;
+      color: var(--color-primary-800);
+
+      @include utils.media-query(mobile) {
+        font-size: 1.5rem;
+      }
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    @include utils.responsive-spacing(row-gap, sm);
+
+    li {
+      list-style: none;
+    }
+  }
+
+  &__footer {
+    @include utils.responsive-spacing(margin-top, md);
+    @include utils.responsive-spacing(padding-top, sm);
+    border-top: 0.0625rem solid var(--color-gray-600);
+  }
+}
