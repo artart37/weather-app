@@ -1,0 +1,29 @@
+@use "sass:map";
+@use "./media-query";
+@use "../variables/" as variables;
+
+// Get spacing value from the spacing map
+@function spacing($key) {
+  @if map.has-key(variables.$spacing, $key) {
+    @return map.get(variables.$spacing, $key);
+  } @else {
+    @error 'The spacing key #{$key} is not defined in the spacing map.';
+  }
+}
+
+// Responsive padding mixin
+@mixin responsive-spacing($property: padding, $key: content) {
+  #{$property}: spacing($key);
+
+  @include media-query.media-query(desktop) {
+    #{$property}: spacing($key) * 0.875;
+  }
+
+  @include media-query.media-query(tablet) {
+    #{$property}: spacing($key) * 0.75;
+  }
+
+  @include media-query.media-query(mobile) {
+    #{$property}: spacing($key) * 0.625;
+  }
+}
