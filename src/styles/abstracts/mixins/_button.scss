@@ -4,7 +4,6 @@
   padding: 0 1rem;
   min-height: 2.75rem;
   min-width: 2.75rem;
-  border-radius: 0.5rem;
   font-size: 1.125rem;
   font-weight: 500;
   line-height: 1.5;
@@ -25,6 +24,16 @@
   background-color: $bg-color;
   color: $text-color;
   border: 0.0625rem solid $border-color;
+  border-radius: 0.5rem;
+}
+
+@mixin button-tabular-theming {
+  border-radius: 0;
+}
+
+@mixin button-base-active-theming($activeBackgroundColor, $activeTextColor) {
+  background-color: $activeBackgroundColor;
+  color: $activeTextColor;
 }
 
 @mixin button-base-hover-effect {
