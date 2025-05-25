@@ -1,0 +1,33 @@
+<div class="wa-input">
+  @if(label) {
+  <label class="wa-input__label" [for]="name">
+    {{ label }}
+  </label>
+  }
+
+  <div class="wa-input__wrapper">
+    <input
+      class="wa-input__field"
+      [type]="type"
+      [name]="name"
+      [id]="name"
+      [placeholder]="placeholder"
+      [disabled]="disabled"
+      [value]="value"
+      (input)="handleInput($event)"
+      (blur)="handleBlur()"
+      [class.disabled]="disabled"
+    />
+
+    @if(showClearButton && !disabled) {
+    <button
+      type="button"
+      class="wa-input__clear"
+      (click)="handleClear()"
+      aria-label="Clear input"
+    >
+      ×
+    </button>
+    }
+  </div>
+</div>
