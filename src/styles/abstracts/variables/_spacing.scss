@@ -1,0 +1,30 @@
+$spacing-base: 1rem;
+
+// Common spacing values
+$spacing-xs: $spacing-base * 0.5;
+$spacing-sm: $spacing-base;
+$spacing-md: $spacing-base * 1.5;
+$spacing-lg: $spacing-base * 2;
+
+// Layout spacing
+$card: $spacing-sm;
+$page: $spacing-md;
+$section: $spacing-sm;
+
+// Spacing scale
+$spacing: (
+  xs: $spacing-xs,
+  sm: $spacing-sm,
+  md: $spacing-md,
+  lg: $spacing-lg,
+
+  // Component specific
+  card: $card,
+  section: $section,
+  page: $page,
+
+  // Layout specific
+  header: $spacing-base * 1.5,
+  content: $spacing-base * 1.5,
+  footer: $spacing-base * 1.5,
+);
