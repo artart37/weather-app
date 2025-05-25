@@ -18,12 +18,12 @@
 
 .wa-card-header {
   border-bottom: 0.125rem solid var(--color-tertiary-200);
-  font-size: 1.25rem;
   font-weight: bold;
   color: currentColor;
   @include mixins.responsive-spacing(padding, card);
 
   h2 {
+    font-size: 1.25rem;
     @include mixins.responsive-spacing(margin-top, sm);
     @include mixins.responsive-spacing(margin-bottom, sm);
   }

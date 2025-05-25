@@ -8,10 +8,10 @@
   position: relative;
   background-color: transparent;
 
-  header,
-  main,
-  footer {
-    @include mixins.responsive-spacing(padding, content);
+  wa-header {
+    header {
+      @include mixins.responsive-spacing(padding, content);
+    }
   }
 
   main {
@@ -19,6 +19,12 @@
     flex: 1 1 auto;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    @include mixins.responsive-spacing(padding, content);
+  }
+
+  wa-footer {
+    footer {
+      @include mixins.responsive-spacing(padding, content);
+    }
   }
 }
