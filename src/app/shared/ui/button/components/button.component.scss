@@ -1,4 +1,4 @@
-@use "utils" as utils;
+@use "utils";
 
 :host {
   display: inline-block;
@@ -13,11 +13,37 @@
       var(--color-secondary-700),
       var(--color-white)
     );
-    @include utils.button-base-hover-effect;
+    &.active {
+      @include utils.button-base-active-theming(
+        var(--color-white),
+        var(--color-secondary-700)
+      );
+      transition: background-color 0.5s ease;
+    }
+    &.tabular {
+      @include utils.button-tabular-theming;
+    }
   }
 
   &.solid {
-    @include utils.button-base-theming(var(--color-white), var(--color-black));
+    @include utils.button-base-theming(
+      var(--color-primary-100),
+      var(--color-primary-700)
+    );
+    &.active {
+      @include utils.button-base-active-theming(
+        var(--color-primary-800),
+        var(--color-primary-100)
+      );
+      transition: all 0.3s ease;
+    }
+    &.tabular {
+      @include utils.button-tabular-theming;
+    }
+  }
+
+  &.accent,
+  &.solid {
     @include utils.button-base-hover-effect;
   }
 
@@ -26,11 +52,11 @@
     opacity: 0.5;
   }
 
-  @media only screen and (max-width: 480px) {
-    font-size: 0.75rem;
+  @include utils.media-query(tablet) {
+    font-size: 0.85rem;
   }
 
-  @media only screen and (min-width: 481px) and (max-width: 600px) {
-    font-size: 0.85rem;
+  @include utils.media-query(mobile) {
+    font-size: 0.75rem;
   }
 }

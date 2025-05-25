@@ -1,9 +1,11 @@
 <button
   class="wa-button"
+  [class.active]="active"
   [class.accent]="accent"
   [class.solid]="solid"
+  [class.tabular]="tabular"
   [type]="type"
   [disabled]="disabled"
 >
-  <ng-content></ng-content>
+  <ng-content />
 </button>
