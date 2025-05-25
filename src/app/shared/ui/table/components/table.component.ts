@@ -3,11 +3,12 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TableHeader, TableRow } from '../models';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    selector: 'wa-table',
-    imports: [CommonModule],
-    templateUrl: './table.component.html',
-    styleUrl: './table.component.scss'
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  selector: 'wa-table',
+  imports: [CommonModule],
+  templateUrl: './table.component.html',
+  styleUrl: './table.component.scss',
 })
 export class WaTableComponent<T> {
   @Input() data: TableRow<T>[] | null = null;
