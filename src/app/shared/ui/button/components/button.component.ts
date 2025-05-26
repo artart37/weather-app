@@ -10,7 +10,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 })
 export class WaButtonComponent {
   @Input() active = false;
-  @Input() accent = false;
+  @Input() primary = false;
   @Input() disabled = false;
   @Input() solid = false;
   @Input() tabular = false;

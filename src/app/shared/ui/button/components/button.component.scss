@@ -1,4 +1,4 @@
-@use "utils";
+@use 'utils';
 
 :host {
   display: inline-block;
@@ -9,15 +9,9 @@
   @include utils.button-base-theming;
 
   &.accent {
-    @include utils.button-base-theming(
-      var(--color-secondary-700),
-      var(--color-white)
-    );
+    @include utils.button-base-theming(var(--color-primary-700), var(--color-white));
     &.active {
-      @include utils.button-base-active-theming(
-        var(--color-white),
-        var(--color-secondary-700)
-      );
+      @include utils.button-base-active-theming(var(--color-white), var(--color-primary-700));
       transition: background-color 0.5s ease;
     }
     &.tabular {
@@ -26,15 +20,9 @@
   }
 
   &.solid {
-    @include utils.button-base-theming(
-      var(--color-primary-100),
-      var(--color-primary-700)
-    );
+    @include utils.button-base-theming(var(--color-primary-100), var(--color-primary-700));
     &.active {
-      @include utils.button-base-active-theming(
-        var(--color-primary-800),
-        var(--color-primary-100)
-      );
+      @include utils.button-base-active-theming(var(--color-primary-800), var(--color-primary-100));
       transition: all 0.3s ease;
     }
     &.tabular {
