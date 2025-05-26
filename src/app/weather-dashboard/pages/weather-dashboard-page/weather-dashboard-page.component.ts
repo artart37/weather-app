@@ -13,31 +13,38 @@ import {
   debounceTime,
   distinctUntilChanged,
   filter,
+  finalize,
   from,
-  mergeMap,
   map,
+  mergeMap,
+  Observable,
   Subject,
   switchMap,
   takeUntil,
-  finalize,
-  concatMap,
-  Observable,
   tap,
 } from 'rxjs';
+
 import { GeoLocationResult, GeoLocationService } from '../../../shared/data-access/geo-location';
-import { AutocompleteSuggestion, WaCardComponent } from '../../../shared/ui';
-import { WaAutoCompleteMultiselectComponent } from './../../../shared/ui/input/components';
 import {
   WeatherDataRequest,
   WeatherDataResponse,
   WeatherDataService,
 } from '../../../shared/data-access/weather';
+import { WaWeatherCodePipe } from '../../../shared/pipes';
+import { AutocompleteSuggestion, WaCardComponent } from '../../../shared/ui';
 import { WeatherDataForDisplay } from '../models';
+import { WaAutoCompleteMultiselectComponent } from './../../../shared/ui/input/components';
 
 @Component({
   selector: 'wa-weather-dashboard-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, WaAutoCompleteMultiselectComponent, WaCardComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    WaAutoCompleteMultiselectComponent,
+    WaCardComponent,
+    WaWeatherCodePipe,
+  ],
   templateUrl: './weather-dashboard-page.component.html',
   styleUrls: ['./weather-dashboard-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -16,11 +16,23 @@
       @for (entry of weatherData$ | async; track entry.location) {
         <wa-card>
           <div class="wa-card-header">
-            <h2>{{ entry.location }}</h2>
+            <h3>{{ entry.location }}</h3>
           </div>
           <div class="wa-card-body">
             <div class="weather-info">
-              <div class="weather-info__temperature">{{ entry.data.current.temperature2m }}°C</div>
+              <div class="weather-info__temperature">
+                <p>
+                  <span class="label">Current temperature: </span>
+                  <span>{{ entry.data.current.temperature_2m }}</span>
+                  <span>{{ entry.data.current_units.temperature_2m }}</span>
+                </p>
+              </div>
+              <div class="weather-info__condition">
+                <p>
+                  <span class="label">Weather condition: </span>
+                  <span>{{ entry.data.current.weather_code | waWeatherCode }}</span>
+                </p>
+              </div>
             </div>
           </div>
           <div class="wa-card-footer">
