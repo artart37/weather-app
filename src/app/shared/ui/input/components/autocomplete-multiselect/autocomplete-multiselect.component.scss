@@ -1,5 +1,6 @@
 @use 'utils' as utils;
 
+$suggestion-item-height: 2.5rem;
 .wa-input {
   position: relative;
   width: 100%;
@@ -107,7 +108,11 @@
   }
 
   &__suggestion {
-    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 0.75rem;
+    height: $suggestion-item-height;
     cursor: pointer;
     transition: background-color 0.2s ease;
 
@@ -129,6 +134,7 @@
       gap: 0.75rem;
       cursor: pointer;
       width: 100%;
+      height: $suggestion-item-height;
 
       input[type='checkbox'] {
         width: 1rem;

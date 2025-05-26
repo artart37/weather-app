@@ -14,16 +14,16 @@
       [id]="name"
       [placeholder]="placeholder"
       [disabled]="disabled"
-      [value]="inputValueSignal()"
-      (input)="handleInput($event)"
-      (blur)="handleBlur()"
+      [value]="signals.inputValue()"
+      (input)="handlers.input($event)"
+      (blur)="handlers.blur()"
       [class.disabled]="disabled"
     />
-    @if (showClearButton() && !disabled) {
+    @if (computed.showInputClearButton() && !disabled) {
       <button
         type="button"
         class="wa-input__clear"
-        (click)="handleClear()"
+        (click)="handlers.clear()"
         aria-label="Clear input"
       >
         ✕
@@ -31,29 +31,26 @@
     }
   </div>
 
-  @if (selectedSuggestionsSignal()) {
+  @if (signals.appliedSuggestions()) {
     <div class="wa-input__selected-chips">
-      @for (selected of selectedSuggestionsSignal(); track selected) {
-        <wa-chip
-          [chip]="selected.displayProperty"
-          (chipRemoved)="handleChipRemove(selected)"
-        ></wa-chip>
+      @for (selected of signals.appliedSuggestions(); track selected) {
+        <wa-chip [chip]="selected.displayProperty" (chipRemoved)="chips.remove(selected)"></wa-chip>
       }
     </div>
   }
 
-  @if (showSuggestionsSignal() && suggestionsSignal().length) {
+  @if (signals.showSuggestions() && signals.suggestions().length) {
     <div class="wa-input__suggestions">
-      @for (suggestion of suggestionsSignal(); let i = $index; track i) {
+      @for (suggestion of signals.suggestions(); let i = $index; track i) {
         <div
           class="wa-input__suggestion"
-          [class.wa-input__suggestion--selected]="i === selectedIndexSignal()"
+          [class.wa-input__suggestion--selected]="i === signals.selectedIndex()"
         >
           <label class="wa-input__suggestion__label">
             <input
               type="checkbox"
-              [checked]="isSuggestionSelected(suggestion)"
-              (change)="toggleSuggestion(suggestion)"
+              [checked]="suggestionMethods.isSelected(suggestion)"
+              (change)="suggestionMethods.toggle(suggestion)"
             />
             <span>{{ suggestion.displayProperty }}</span>
           </label>
@@ -63,12 +60,16 @@
     <div class="wa-input__suggestions-footer">
       <wa-button
         [solid]="true"
-        [disabled]="!hasSelectedSuggestions()"
-        (click)="handleClearSelection()"
+        [disabled]="!computed.hasSelectedSuggestions()"
+        (click)="suggestionMethods.clearSelection()"
       >
         Clear
       </wa-button>
-      <wa-button [primary]="true" [disabled]="!hasSelectedSuggestions()" (click)="handleApply()">
+      <wa-button
+        [primary]="true"
+        [disabled]="!computed.hasSelectedSuggestions()"
+        (click)="suggestionMethods.apply()"
+      >
         Apply
       </wa-button>
     </div>

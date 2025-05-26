@@ -33,7 +33,7 @@ import { WaChipComponent } from '../../../chip';
     },
   ],
 })
-export class WaAutoCompleteMultiselectComponent<T> implements ControlValueAccessor {
+export class WaAutoCompleteMultiselectComponent<T = unknown> implements ControlValueAccessor {
   private elementRef = inject(ElementRef);
 
   @Input() disabled = false;
@@ -43,33 +43,39 @@ export class WaAutoCompleteMultiselectComponent<T> implements ControlValueAccess
   @Input() type = 'text';
 
   @Input() set suggestions(value: AutocompleteSuggestion<T>[]) {
-    this.suggestionsSignal.set(value);
+    this.signals.suggestions.set(value);
   }
 
   @Output() applied = new EventEmitter<AutocompleteSuggestion<T>[]>();
 
   @ViewChild('input') inputRef!: ElementRef<HTMLInputElement>;
 
-  suggestionsSignal = signal<AutocompleteSuggestion<T>[]>([]);
-  inputValueSignal = signal('');
-  selectedIndexSignal = signal(-1);
-  showSuggestionsSignal = signal(false);
-  selectedSuggestionsSignal = signal<AutocompleteSuggestion<T>[]>([]);
+  readonly signals = {
+    suggestions: signal<AutocompleteSuggestion<T>[]>([]),
+    inputValue: signal<string>(''),
+    selectedIndex: signal<number>(-1),
+    showSuggestions: signal<boolean>(false),
+    appliedSuggestions: signal<AutocompleteSuggestion<T>[]>([]),
+    selectedSuggestions: signal<AutocompleteSuggestion<T>[]>([]),
+  };
 
-  showClearButton = computed(() => !!this.inputValueSignal());
-  hasSelectedSuggestions = computed(() => this.selectedSuggestionsSignal().length > 0);
-  chipTexts = computed(() => this.selectedSuggestionsSignal().map(s => s.displayProperty));
+  readonly computed = {
+    showInputClearButton: computed(() => Boolean(this.signals.inputValue())),
+    hasSelectedSuggestions: computed(() => this.signals.selectedSuggestions().length > 0),
+    chipTexts: computed(() => {
+      const suggestions = this.signals.appliedSuggestions();
+      return suggestions ? suggestions.map(s => s.displayProperty) : [];
+    }),
+  };
 
-  private onChange: (value: AutocompleteSuggestion<T>[]) => void = () => {};
+  private onChange: (value: string) => void = () => {};
   private onTouched: () => void = () => {};
 
-  writeValue(value: AutocompleteSuggestion<T>[]): void {
-    const displayValues = value?.map(v => v.displayProperty).join(', ') || '';
-    this.inputValueSignal.set(displayValues);
-    this.selectedSuggestionsSignal.set(value || []);
+  writeValue(value: string): void {
+    this.signals.inputValue.set(value);
   }
 
-  registerOnChange(fn: () => void): void {
+  registerOnChange(fn: (value: string) => void): void {
     this.onChange = fn;
   }
 
@@ -81,101 +87,111 @@ export class WaAutoCompleteMultiselectComponent<T> implements ControlValueAccess
     this.disabled = isDisabled;
   }
 
-  handleInput(event: Event): void {
-    const value = (event.target as HTMLInputElement).value;
-    this.inputValueSignal.set(value);
-    this.showSuggestionsSignal.set(true);
-    this.selectedIndexSignal.set(-1);
-  }
+  readonly handlers = {
+    input: (event: Event): void => {
+      const value = (event.target as HTMLInputElement).value;
+      this.signals.inputValue.set(value);
+      this.signals.showSuggestions.set(true);
+      this.signals.selectedIndex.set(-1);
+      this.onChange(value);
+    },
+    blur: (): void => {
+      this.onTouched();
+    },
+    clear: (): void => {
+      this.signals.inputValue.set('');
+      this.signals.showSuggestions.set(false);
+      this.onChange('');
+    },
+  };
 
-  handleBlur(): void {
-    this.onTouched();
-  }
+  readonly suggestionMethods = {
+    toggle: (suggestion: AutocompleteSuggestion<T>): void => {
+      const current = this.signals.selectedSuggestions();
+      const isSelected = current.some(s => s.displayProperty === suggestion.displayProperty);
 
-  handleClear(): void {
-    this.inputValueSignal.set('');
-    this.selectedSuggestionsSignal.set([]);
-    this.onChange([]);
-    this.showSuggestionsSignal.set(false);
-  }
+      if (isSelected) {
+        const updated = current.filter(s => s.displayProperty !== suggestion.displayProperty);
+        this.signals.selectedSuggestions.set(updated);
+      } else {
+        const updated = [...current, suggestion];
+        this.signals.selectedSuggestions.set(updated);
+      }
+    },
+    apply: (): void => {
+      this.signals.appliedSuggestions.set(this.signals.selectedSuggestions());
+      this.applied.emit(this.signals.appliedSuggestions());
+      this.signals.showSuggestions.set(false);
+    },
+    clearSelection: (): void => {
+      this.signals.appliedSuggestions.set([]);
+      this.signals.selectedSuggestions.set([]);
+      this.applied.emit([]);
+    },
+    isSelected: (suggestion: AutocompleteSuggestion<T>): boolean => {
+      return this.signals
+        .selectedSuggestions()
+        .some(s => s.displayProperty === suggestion.displayProperty);
+    },
+  };
 
-  toggleSuggestion(suggestion: AutocompleteSuggestion<T>): void {
-    const current = this.selectedSuggestionsSignal();
-    const isSelected = current.some(s => s.displayProperty === suggestion.displayProperty);
+  readonly chips = {
+    remove: (suggestion: AutocompleteSuggestion<T>): void => {
+      const filterOut = (s: AutocompleteSuggestion<T>) =>
+        s.displayProperty !== suggestion.displayProperty;
 
-    if (isSelected) {
-      const updated = current.filter(s => s.displayProperty !== suggestion.displayProperty);
-      this.selectedSuggestionsSignal.set(updated);
-    } else {
-      const updated = [...current, suggestion];
-      this.selectedSuggestionsSignal.set(updated);
-    }
+      const filtered = this.signals.selectedSuggestions().filter(filterOut);
 
-    this.onChange(this.selectedSuggestionsSignal());
-  }
+      this.signals.selectedSuggestions.set(filtered);
+      this.signals.appliedSuggestions.set(filtered);
 
-  handleApply(): void {
-    this.onChange(this.selectedSuggestionsSignal());
-    this.applied.emit(this.selectedSuggestionsSignal());
-    this.showSuggestionsSignal.set(false);
-  }
+      this.applied.emit(filtered);
 
-  handleChipRemove(suggestion: AutocompleteSuggestion<T>): void {
-    const updated = this.selectedSuggestionsSignal().filter(
-      (s: AutocompleteSuggestion<T>) => s.displayProperty !== suggestion.displayProperty,
-    );
-    this.selectedSuggestionsSignal.set(updated);
-    this.onChange(updated);
+      if (filtered.length === 0) {
+        this.signals.showSuggestions.set(false);
+      }
+    },
+  };
 
-    if (!updated.length) {
-      this.showSuggestionsSignal.set(false);
-    }
-  }
+  private readonly keyboard = {
+    handleKeyDown: (event: KeyboardEvent): void => {
+      if (!this.signals.showSuggestions()) return;
 
-  handleClearSelection(): void {
-    this.selectedSuggestionsSignal.set([]);
-    this.onChange([]);
-  }
+      const currentIndex = this.signals.selectedIndex();
+      const suggestions = this.signals.suggestions();
 
-  isSuggestionSelected(suggestion: AutocompleteSuggestion<T>): boolean {
-    return this.selectedSuggestionsSignal().some(
-      (s: AutocompleteSuggestion<T>) => s.displayProperty === suggestion.displayProperty,
-    );
-  }
+      switch (event.key) {
+        case 'ArrowDown':
+          event.preventDefault();
+          this.signals.selectedIndex.set(Math.min(currentIndex + 1, suggestions.length - 1));
+          break;
+        case 'ArrowUp':
+          event.preventDefault();
+          this.signals.selectedIndex.set(Math.max(currentIndex - 1, 0));
+          break;
+        case 'Enter':
+          event.preventDefault();
+          if (currentIndex >= 0) {
+            this.suggestionMethods.toggle(suggestions[currentIndex]);
+          }
+          break;
+        case 'Escape':
+          this.signals.showSuggestions.set(false);
+          break;
+      }
+    },
+  };
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
     const clickedInside = this.elementRef.nativeElement.contains(event.target);
     if (!clickedInside) {
-      this.showSuggestionsSignal.set(false);
+      this.signals.showSuggestions.set(false);
     }
   }
 
   @HostListener('keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent): void {
-    if (!this.showSuggestionsSignal()) return;
-
-    const currentIndex = this.selectedIndexSignal();
-    const suggestions = this.suggestionsSignal();
-
-    switch (event.key) {
-      case 'ArrowDown':
-        event.preventDefault();
-        this.selectedIndexSignal.set(Math.min(currentIndex + 1, suggestions.length - 1));
-        break;
-      case 'ArrowUp':
-        event.preventDefault();
-        this.selectedIndexSignal.set(Math.max(currentIndex - 1, 0));
-        break;
-      case 'Enter':
-        event.preventDefault();
-        if (currentIndex >= 0) {
-          this.toggleSuggestion(suggestions[currentIndex]);
-        }
-        break;
-      case 'Escape':
-        this.showSuggestionsSignal.set(false);
-        break;
-    }
+    this.keyboard.handleKeyDown(event);
   }
 }
