@@ -1,4 +1,4 @@
-@use "utils" as utils;
+@use 'utils' as utils;
 
 .about {
   &__header {
@@ -25,8 +25,8 @@
   }
 
   &__footer {
+    border-top: 0.0625rem solid var(--color-gray-600);
     @include utils.responsive-spacing(margin-top, md);
     @include utils.responsive-spacing(padding-top, sm);
-    border-top: 0.0625rem solid var(--color-gray-600);
   }
 }
