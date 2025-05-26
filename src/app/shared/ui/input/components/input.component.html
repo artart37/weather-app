@@ -32,12 +32,13 @@
     }
   </div>
 
-  @if (showSuggestionsSignal() && suggestionsSignal().length > 0) {
+  @if (true) {
     <div class="wa-input__suggestions">
       @for (suggestion of suggestionsSignal(); let i = $index; track i) {
         <div
           class="wa-input__suggestion"
           [class.wa-input__suggestion--selected]="i === selectedIndexSignal()"
+          (click)="toggleSuggestion(suggestion)"
         >
           <label class="wa-input__suggestion__label">
             <input
@@ -49,19 +50,18 @@
           </label>
         </div>
       }
-
-      <div class="wa-input__suggestions-footer">
-        <wa-button
-          [solid]="true"
-          [disabled]="!hasSelectedSuggestions()"
-          (click)="handleClearSelection()"
-        >
-          Clear
-        </wa-button>
-        <wa-button [primary]="true" [disabled]="!hasSelectedSuggestions()" (click)="handleApply()">
-          Apply
-        </wa-button>
-      </div>
+    </div>
+    <div class="wa-input__suggestions-footer">
+      <wa-button
+        [solid]="true"
+        [disabled]="!hasSelectedSuggestions()"
+        (click)="handleClearSelection()"
+      >
+        Clear
+      </wa-button>
+      <wa-button [primary]="true" [disabled]="!hasSelectedSuggestions()" (click)="handleApply()">
+        Apply
+      </wa-button>
     </div>
   }
 </div>
