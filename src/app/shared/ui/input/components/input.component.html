@@ -1,33 +1,67 @@
 <div class="wa-input">
-  @if(label) {
-  <label class="wa-input__label" [for]="name">
-    {{ label }}
-  </label>
+  @if (label) {
+    <label class="wa-input__label" [for]="name">
+      {{ label }}
+    </label>
   }
 
-  <div class="wa-input__wrapper">
+  <div class="wa-input__container">
     <input
+      #input
       class="wa-input__field"
       [type]="type"
       [name]="name"
       [id]="name"
       [placeholder]="placeholder"
       [disabled]="disabled"
-      [value]="value"
+      [value]="inputValueSignal()"
       (input)="handleInput($event)"
       (blur)="handleBlur()"
       [class.disabled]="disabled"
     />
 
-    @if(showClearButton && !disabled) {
-    <button
-      type="button"
-      class="wa-input__clear"
-      (click)="handleClear()"
-      aria-label="Clear input"
-    >
-      ×
-    </button>
+    @if (showClearButton() && !disabled) {
+      <button
+        type="button"
+        class="wa-input__clear"
+        (click)="handleClear()"
+        aria-label="Clear input"
+      >
+        ✕
+      </button>
     }
   </div>
+
+  @if (showSuggestionsSignal() && suggestionsSignal().length > 0) {
+    <div class="wa-input__suggestions">
+      @for (suggestion of suggestionsSignal(); let i = $index; track i) {
+        <div
+          class="wa-input__suggestion"
+          [class.wa-input__suggestion--selected]="i === selectedIndexSignal()"
+        >
+          <label class="wa-input__suggestion__label">
+            <input
+              type="checkbox"
+              [checked]="isSuggestionSelected(suggestion)"
+              (change)="toggleSuggestion(suggestion)"
+            />
+            <span>{{ suggestion.displayProperty }}</span>
+          </label>
+        </div>
+      }
+
+      <div class="wa-input__suggestions-footer">
+        <wa-button
+          [solid]="true"
+          [disabled]="!hasSelectedSuggestions()"
+          (click)="handleClearSelection()"
+        >
+          Clear
+        </wa-button>
+        <wa-button [primary]="true" [disabled]="!hasSelectedSuggestions()" (click)="handleApply()">
+          Apply
+        </wa-button>
+      </div>
+    </div>
+  }
 </div>

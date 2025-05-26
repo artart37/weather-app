@@ -1,1 +1,2 @@
-export * from './components/input.component';
+export * from './components';
+export * from './models.ts';
