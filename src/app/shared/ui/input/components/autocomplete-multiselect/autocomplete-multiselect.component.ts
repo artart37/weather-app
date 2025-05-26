@@ -14,26 +14,26 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { WaButtonComponent } from '../../button';
-import { AutocompleteSuggestion } from '../models.ts';
-import { WaChipComponent } from '../../chip';
+import { WaButtonComponent } from '../../../button';
+import { AutocompleteSuggestion } from '../../models.ts';
+import { WaChipComponent } from '../../../chip';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [CommonModule, WaButtonComponent, WaChipComponent],
-  selector: 'wa-input',
-  templateUrl: './input.component.html',
-  styleUrls: ['./input.component.scss'],
+  selector: 'wa-autocomplete-multiselect',
+  templateUrl: './autocomplete-multiselect.component.html',
+  styleUrls: ['./autocomplete-multiselect.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => WaInputComponent),
+      useExisting: forwardRef(() => WaAutoCompleteMultiselectComponent),
       multi: true,
     },
   ],
 })
-export class WaInputComponent<T> implements ControlValueAccessor {
+export class WaAutoCompleteMultiselectComponent<T> implements ControlValueAccessor {
   private elementRef = inject(ElementRef);
 
   @Input() disabled = false;
@@ -46,7 +46,6 @@ export class WaInputComponent<T> implements ControlValueAccessor {
     this.suggestionsSignal.set(value);
   }
 
-  @Output() search = new EventEmitter<string>();
   @Output() applied = new EventEmitter<AutocompleteSuggestion<T>[]>();
 
   @ViewChild('input') inputRef!: ElementRef<HTMLInputElement>;
@@ -85,7 +84,6 @@ export class WaInputComponent<T> implements ControlValueAccessor {
   handleInput(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
     this.inputValueSignal.set(value);
-    this.search.emit(value);
     this.showSuggestionsSignal.set(true);
     this.selectedIndexSignal.set(-1);
   }
