@@ -19,7 +19,6 @@
       (blur)="handleBlur()"
       [class.disabled]="disabled"
     />
-
     @if (showClearButton() && !disabled) {
       <button
         type="button"
@@ -32,7 +31,18 @@
     }
   </div>
 
-  @if (true) {
+  @if (selectedSuggestionsSignal()) {
+    <div class="wa-input__selected-chips">
+      @for (selected of selectedSuggestionsSignal(); track selected) {
+        <wa-chip
+          [chip]="selected.displayProperty"
+          (chipRemoved)="handleChipRemove(selected)"
+        ></wa-chip>
+      }
+    </div>
+  }
+
+  @if (showSuggestionsSignal() && suggestionsSignal().length) {
     <div class="wa-input__suggestions">
       @for (suggestion of suggestionsSignal(); let i = $index; track i) {
         <div

@@ -16,11 +16,12 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { WaButtonComponent } from '../../button';
 import { AutocompleteSuggestion } from '../models.ts';
+import { WaChipComponent } from '../../chip';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, WaButtonComponent],
+  imports: [CommonModule, WaButtonComponent, WaChipComponent],
   selector: 'wa-input',
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss'],
@@ -58,6 +59,7 @@ export class WaInputComponent<T> implements ControlValueAccessor {
 
   showClearButton = computed(() => !!this.inputValueSignal());
   hasSelectedSuggestions = computed(() => this.selectedSuggestionsSignal().length > 0);
+  chipTexts = computed(() => this.selectedSuggestionsSignal().map(s => s.displayProperty));
 
   private onChange: (value: AutocompleteSuggestion<T>[]) => void = () => {};
   private onTouched: () => void = () => {};
@@ -118,6 +120,18 @@ export class WaInputComponent<T> implements ControlValueAccessor {
     this.onChange(this.selectedSuggestionsSignal());
     this.applied.emit(this.selectedSuggestionsSignal());
     this.showSuggestionsSignal.set(false);
+  }
+
+  handleChipRemove(suggestion: AutocompleteSuggestion<T>): void {
+    const updated = this.selectedSuggestionsSignal().filter(
+      (s: AutocompleteSuggestion<T>) => s.displayProperty !== suggestion.displayProperty,
+    );
+    this.selectedSuggestionsSignal.set(updated);
+    this.onChange(updated);
+
+    if (!updated.length) {
+      this.showSuggestionsSignal.set(false);
+    }
   }
 
   handleClearSelection(): void {
