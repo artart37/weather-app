@@ -19,7 +19,7 @@ describe('WaButtonComponent', () => {
   });
 
   it('should have default values', () => {
-    expect(component.accent).toBeFalse();
+    expect(component.primary).toBeFalse();
     expect(component.disabled).toBeFalse();
     expect(component.solid).toBeFalse();
     expect(component.type).toBe('button');
@@ -33,7 +33,7 @@ describe('WaButtonComponent', () => {
   });
 
   it('should apply accent class when accent is true', () => {
-    component.accent = true;
+    component.primary = true;
     fixture.detectChanges();
     const button = fixture.nativeElement.querySelector('button');
     expect(button.classList.contains('accent')).toBeTrue();

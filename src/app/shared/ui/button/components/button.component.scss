@@ -30,13 +30,13 @@
     }
   }
 
-  &.primary,
-  &.solid {
+  &.primary:not([disabled]),
+  &.solid:not([disabled]) {
     @include utils.button-base-hover-effect;
   }
 
   &[disabled] {
-    cursor: default;
+    cursor: not-allowed;
     opacity: 0.5;
   }
 
