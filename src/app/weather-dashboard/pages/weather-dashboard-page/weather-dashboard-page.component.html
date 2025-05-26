@@ -1,13 +1,39 @@
 <div class="weather-dashboard">
-  <section class="weather-dashboard__search">
-    <wa-input
-      label="Search"
-      name="city"
-      placeholder="Type a name of a city..."
-    ></wa-input>
-  </section>
+  <div class="weather-dashboard__search">
+    <wa-autocomplete-multiselect
+      [formControl]="cityControl"
+      label="Search Location"
+      placeholder="Enter city name"
+      [suggestions]="suggestionsComputed()"
+      (applied)="handleSelectedSuggestions($event)"
+    ></wa-autocomplete-multiselect>
+  </div>
 
-  <section class="weather-dashboard__cities">
-    <!-- Cities grid will be added here -->
-  </section>
+  @if (loadingSignal()) {
+    <div class="weather-dashboard__loading"></div>
+  } @else {
+    <div class="weather-dashboard__content">
+      @for (entry of weatherData$ | async; track entry.location) {
+        <wa-card>
+          <div class="wa-card-header">
+            <h2>{{ entry.location }}</h2>
+          </div>
+          <div class="wa-card-body">
+            <div class="weather-info">
+              <div class="weather-info__temperature">{{ entry.data.current.temperature2m }}°C</div>
+            </div>
+          </div>
+          <div class="wa-card-footer">
+            <button
+              class="remove"
+              (click)="removeLocation(entry.location)"
+              aria-label="Remove location"
+            >
+              ✕
+            </button>
+          </div>
+        </wa-card>
+      }
+    </div>
+  }
 </div>
