@@ -4,6 +4,7 @@
       [formControl]="cityControl"
       label="Search Location"
       placeholder="Enter city name"
+      [searchResultRemoved]="searchResultRemovedSignal()"
       [suggestions]="suggestionsComputed()"
       (applied)="handleSelectedSuggestions($event)"
     ></wa-autocomplete-multiselect>
@@ -13,7 +14,7 @@
     <div class="weather-dashboard__loading"></div>
   } @else {
     <div class="weather-dashboard__content">
-      @for (entry of weatherData$ | async; track entry.location) {
+      @for (entry of weatherData$ | async; track entry.id) {
         <wa-card>
           <div class="wa-card-header">
             <h3>{{ entry.location }}</h3>

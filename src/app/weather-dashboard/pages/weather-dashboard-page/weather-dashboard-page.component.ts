@@ -55,6 +55,7 @@ export class WeatherDashboardPageComponent implements OnInit {
 
   cityControl = new FormControl<string | null>(null);
   loadingSignal = signal<boolean>(false);
+  searchResultRemovedSignal = signal<WeatherDataForDisplay | null>(null);
   suggestionsSignal = signal<GeoLocationResult[]>([]);
   suggestionsComputed = computed<AutocompleteSuggestion<GeoLocationResult>[]>(() => {
     return this.suggestionsSignal()
@@ -149,7 +150,9 @@ export class WeatherDashboardPageComponent implements OnInit {
     });
   }
 
-  removeLocation(weatherItem: WeatherDataForDisplay): void {}
+  removeLocation(weatherItem: WeatherDataForDisplay): void {
+    this.searchResultRemovedSignal.set(weatherItem);
+  }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();

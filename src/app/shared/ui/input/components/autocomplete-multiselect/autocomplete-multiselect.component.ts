@@ -17,6 +17,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { WaButtonComponent } from '../../../button';
 import { AutocompleteSuggestion } from '../../models.ts';
 import { WaChipComponent } from '../../../chip';
+import { WeatherDataForDisplay } from '../../../../../weather-dashboard/pages';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -41,6 +42,17 @@ export class WaAutoCompleteMultiselectComponent<T = unknown> implements ControlV
   @Input() name = '';
   @Input() placeholder = '';
   @Input() type = 'text';
+
+  @Input() set searchResultRemoved(value: WeatherDataForDisplay | null) {
+    if (!value) return;
+
+    const filterOut = (suggestions: AutocompleteSuggestion<T>[]) =>
+      suggestions.filter(suggestion => suggestion.id !== value.id);
+
+    this.signals.appliedSuggestions.update(filterOut);
+    this.signals.selectedSuggestions.update(filterOut);
+    this.applied.emit(this.signals.appliedSuggestions());
+  }
 
   @Input() set suggestions(value: AutocompleteSuggestion<T>[]) {
     this.signals.suggestions.set(value);
