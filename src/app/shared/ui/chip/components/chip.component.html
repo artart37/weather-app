@@ -1,0 +1,10 @@
+@if (chip) {
+  <div class="wa-chip-container">
+    <div class="wa-chip">
+      <span class="wa-chip__text">{{ chip }}</span>
+      <button class="wa-chip__remove" (click)="handleRemoveChip(chip)" aria-label="Remove chip">
+        ✕
+      </button>
+    </div>
+  </div>
+}
