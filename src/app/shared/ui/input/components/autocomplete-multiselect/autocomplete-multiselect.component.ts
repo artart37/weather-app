@@ -108,10 +108,10 @@ export class WaAutoCompleteMultiselectComponent<T = unknown> implements ControlV
   readonly suggestionMethods = {
     toggle: (suggestion: AutocompleteSuggestion<T>): void => {
       const current = this.signals.selectedSuggestions();
-      const isSelected = current.some(s => s.displayProperty === suggestion.displayProperty);
+      const isSelected = current.some(s => s.id === suggestion.id);
 
       if (isSelected) {
-        const updated = current.filter(s => s.displayProperty !== suggestion.displayProperty);
+        const updated = current.filter(s => s.id !== suggestion.id);
         this.signals.selectedSuggestions.set(updated);
       } else {
         const updated = [...current, suggestion];
@@ -129,16 +129,13 @@ export class WaAutoCompleteMultiselectComponent<T = unknown> implements ControlV
       this.applied.emit([]);
     },
     isSelected: (suggestion: AutocompleteSuggestion<T>): boolean => {
-      return this.signals
-        .selectedSuggestions()
-        .some(s => s.displayProperty === suggestion.displayProperty);
+      return this.signals.selectedSuggestions().some(s => s.id === suggestion.id);
     },
   };
 
   readonly chips = {
     remove: (suggestion: AutocompleteSuggestion<T>): void => {
-      const filterOut = (s: AutocompleteSuggestion<T>) =>
-        s.displayProperty !== suggestion.displayProperty;
+      const filterOut = (s: AutocompleteSuggestion<T>) => s.id !== suggestion.id;
 
       const filtered = this.signals.selectedSuggestions().filter(filterOut);
 

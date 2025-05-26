@@ -25,11 +25,7 @@ import {
 } from 'rxjs';
 
 import { GeoLocationResult, GeoLocationService } from '../../../shared/data-access/geo-location';
-import {
-  WeatherDataRequest,
-  WeatherDataResponse,
-  WeatherDataService,
-} from '../../../shared/data-access/weather';
+import { WeatherDataRequest, WeatherDataService } from '../../../shared/data-access/weather';
 import { WaWeatherCodePipe } from '../../../shared/pipes';
 import { AutocompleteSuggestion, WaCardComponent } from '../../../shared/ui';
 import { WeatherDataForDisplay } from '../models';
@@ -60,7 +56,7 @@ export class WeatherDashboardPageComponent implements OnInit {
   cityControl = new FormControl<string | null>(null);
   loadingSignal = signal<boolean>(false);
   suggestionsSignal = signal<GeoLocationResult[]>([]);
-  suggestionsComputed = computed(() => {
+  suggestionsComputed = computed<AutocompleteSuggestion<GeoLocationResult>[]>(() => {
     return this.suggestionsSignal()
       ? this.suggestionsSignal().map(suggestion => {
           const displayProperties = [
@@ -72,6 +68,7 @@ export class WeatherDashboardPageComponent implements OnInit {
             .filter(value => !!value)
             .join(', ');
           return {
+            id: suggestion.id,
             data: suggestion,
             displayProperty: displayProperties,
           };
@@ -81,7 +78,7 @@ export class WeatherDashboardPageComponent implements OnInit {
 
   private fetchWeatherForSuggestion(
     suggestion: AutocompleteSuggestion<GeoLocationResult>,
-  ): Observable<{ location: string; data: WeatherDataResponse }> {
+  ): Observable<WeatherDataForDisplay> {
     const { latitude, longitude } = suggestion.data;
     const request: WeatherDataRequest = {
       latitude,
@@ -93,6 +90,7 @@ export class WeatherDashboardPageComponent implements OnInit {
 
     return this.weather$.getWeatherData(request).pipe(
       map(data => ({
+        id: suggestion.id,
         location: suggestion.displayProperty,
         data,
       })),
@@ -151,13 +149,7 @@ export class WeatherDashboardPageComponent implements OnInit {
     });
   }
 
-  handleRemovedChip(removedChip: string): void {
-    const current = this.weatherDataSubject$.getValue();
-    const updated = current.filter(item => item.location !== removedChip);
-    this.weatherDataSubject$.next(updated);
-  }
-
-  removeLocation(location: string): void {}
+  removeLocation(weatherItem: WeatherDataForDisplay): void {}
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
