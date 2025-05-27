@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChipComponent } from './chip.component';
+import { WaChipComponent } from './chip.component';
 
-describe('ChipComponent', () => {
-  let component: ChipComponent;
-  let fixture: ComponentFixture<ChipComponent>;
+describe('WaChipComponent', () => {
+  let component: WaChipComponent;
+  let fixture: ComponentFixture<WaChipComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ChipComponent]
-    })
-    .compileComponents();
+      imports: [WaChipComponent],
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(ChipComponent);
+    fixture = TestBed.createComponent(WaChipComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
