@@ -32,11 +32,11 @@ describe('WaButtonComponent', () => {
     expect(button.getAttribute('type')).toBe('submit');
   });
 
-  it('should apply accent class when accent is true', () => {
+  it('should apply primary class when primary is true', () => {
     component.primary = true;
     fixture.detectChanges();
     const button = fixture.nativeElement.querySelector('button');
-    expect(button.classList.contains('accent')).toBeTrue();
+    expect(button.classList.contains('primary')).toBeTrue();
   });
 
   it('should apply solid class when solid is true', () => {
